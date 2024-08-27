@@ -1,0 +1,32 @@
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.header-background {
+  background-image: linear-gradient(to right, #336667, #E2E2E2);
+}
+
+.logo {
+  width: 4vw;
+  max-width: 80px;
+  min-width: 50px;
+}
+
+.logo-header-inside{
+  width: 2vw;
+  max-width: 80px;
+  min-width: 50px;
+}
+
+.text-big {
+  font-size: 3vw !important;
+}
+
+.text-small {
+  font-size: 23px !important;
+}
+@media screen and (max-width: 600px) {
+  .text-small{
+    font-size: 18px !important;
+  }
+}
