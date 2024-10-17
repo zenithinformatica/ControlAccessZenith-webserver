@@ -27,7 +27,7 @@ const Signup = () => {
             password: getPassword,
             confirmPassword: getConfirmPassword
         }).then(response => {
-            if(response.data.createdUser){
+            if (response.data.createdUser){
                 showToast("success", "Sucesso", "Cadastro criado com sucesso.");
                 setTimeout(() => {
                     history.push("/");
@@ -36,11 +36,12 @@ const Signup = () => {
                 showToast("error", "Erro!", response.data.error);
             }
         }).catch(err => {
-            if(!err.response.data.createdUser && err.response.status == 401){
+            if (!err.response.data.createdUser && err.response.status == 401)
                 showToast("error", "Erro!", err.response.data.error + " Erro " + err.response.status);
-            }else{
+            else if (!err.response.data.createdUser && err.response.status == 409)
+                showToast("error", "Erro!", err.response.data.error + " Erro " + err.response.status);
+            else
                 showToast("error", "Erro!", "Status de erro: " + err.response.status);
-            }
         })
     }
 

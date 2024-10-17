@@ -31,7 +31,7 @@ const Clients = () => {
     const [showDialog3, setshowDialog3] = useState<boolean>(false);
     
     const [selectedClient, setSelectedClient] = useState<any>(null);
-    const [getNome, setNome] = useState<string>();
+    const [getUsername, setUsername] = useState<string>();
     const [getValidade, setValidade] = useState<string>();
     const [getCnpj, setCnpj] = useState<string>();
     const [getZenUpdate, setZenUpdate] = useState<boolean|undefined>(false);
@@ -58,9 +58,9 @@ const Clients = () => {
     const rowsPag = 10;
 
     const menuModel = [
-        {label: 'Atualizar dados cliente', icon: "pi pi-fw pi-user-edit", command: () => {setshowDialog2(true); setNome(selectedClient.Nome); setCnpj(selectedClient.CNPJ); setZenUpdate(selectedClient.ZenUpdate)}},
+        {label: 'Atualizar dados cliente', icon: "pi pi-fw pi-user-edit", command: () => {setshowDialog2(true); setUsername(selectedClient.Nome); setCnpj(selectedClient.CNPJ); setZenUpdate(selectedClient.ZenUpdate)}},
         {label: 'Atualizar validade'     , icon: "pi pi-fw pi-pencil"   , command: () => {setShowDialog1(true); setValidade(selectedClient.Validade); setZenUpdate(selectedClient.ZenUpdate)}},
-        {label: 'Excluir'                , icon: 'pi pi-fw pi-times'    , command: () => {setshowDialog3(true); setNome(selectedClient.Nome); }}
+        {label: 'Excluir'                , icon: 'pi pi-fw pi-times'    , command: () => {setshowDialog3(true); setUsername(selectedClient.Nome); }}
     ];
 
     /*************************************************
@@ -113,26 +113,21 @@ const Clients = () => {
             // Create a list of days of a month      
             let ListofDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
             if (month == 1 || month > 2) {
-                if (day > ListofDays[month - 1]) {
-                    //to check if the date is out of range
-                    console.log("Invalid date")     
+                if (day > ListofDays[month - 1]) { // To check if the date is out of range 
                     return false;
                 }
             } else if (month == 2) {
                 let leapYear = false;
                 if ((!(year % 4) && year % 100) || !(year % 400)) leapYear = true;
                 if ((leapYear == false) && (day >= 29)) {
-                    console.log("Invalid date")
                     return false;
                 }
                 else
                     if ((leapYear == true) && (day > 29)) {
-                        console.log('Invalid date format!');
                         return false;
                     }
             }
         } else {
-            console.log("Invalid date format!");
             return false;
         }
         return true;
@@ -175,7 +170,7 @@ const Clients = () => {
                         setLoading(false);
                     }
                 }).catch(err => {
-                    showToast("error", "Erro", err.response.data.error.name +  " Status de erro: " + err.response.status)
+                    showToast("error", "Erro", err.response.data.error +  " Status de erro: " + err.response.status)
                     setLoading(false);
                 })
             }else{
@@ -240,11 +235,11 @@ const Clients = () => {
     async function handleUpdateSubmit(event: FormEvent) {
         event.preventDefault();
         try {
-            api.put(`/clients/${selectedClient.IdCliente}`, {Nome: getNome, CNPJ: getCnpj, ZenUpdate: getZenUpdate}, {headers: {accessToken: getCookies.userData.AccessToken}}).then(response => {
+            api.put(`/clients/${selectedClient.IdCliente}`, {Nome: getUsername, CNPJ: getCnpj, ZenUpdate: getZenUpdate}, {headers: {accessToken: getCookies.userData.AccessToken}}).then(response => {
                 if (response.data.updatedClient) {
                     showToast("success", "Atualização", "Dados atualizados com sucesso!");
                     setshowDialog2(false);
-                    setNome('');
+                    setUsername('');
                     setCnpj('');
                 }else{
                     showToast("error", "Erro!", response.data.error);
@@ -416,7 +411,7 @@ const Clients = () => {
                         <div className="p-fluid">
                             <div className="p-col-12 p-lg-12 my-3">
                                 <span className="p-float-label">
-                                    <InputText id="nome" value={getNome} onChange={(e) => setNome((e.target as HTMLInputElement).value)} required/>
+                                    <InputText id="nome" value={getUsername} onChange={(e) => setUsername((e.target as HTMLInputElement).value)} required/>
                                     <label htmlFor="nome">Nome</label>
                                 </span>
                             </div>
@@ -450,8 +445,8 @@ const Clients = () => {
                         <Button label="Atualizar" icon="pi pi-check" className="p-ml-2" iconPos="right"/>
                     </form>
                 </Dialog>
-                <Dialog header="Confirmar exclusão" visible={showDialog3} style={{ width: '30vw' }} onHide={() => setshowDialog3(false)}>
-                    <p>Deseja exluir o registro {getNome}?</p>
+                <Dialog header="Confirmar exclusão" visible={showDialog3} style={{ width: '60vw' }} onHide={() => setshowDialog3(false)}>
+                    <p>Deseja exluir o registro {getUsername}?</p>
                     <Button className='p-button-danger' label='Sim' onClick={handleDelete}></Button>
                     <Button className='p-button-success ml-3' label='Nao' onClick={() => setshowDialog3(false)}></Button>
                 </Dialog>

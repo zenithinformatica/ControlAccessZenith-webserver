@@ -19,7 +19,8 @@ function getCookie(name: any){
 }
 
 const api = axios.create({
-    baseURL: 'http://localhost:3333'
+    // baseURL: 'http://localhost:3333'
+    baseURL: 'https://controlaccesszenith-server.onrender.com'
     // baseURL: 'http://192.168.100.9:3333',
 });
 

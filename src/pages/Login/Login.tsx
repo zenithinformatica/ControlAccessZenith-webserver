@@ -27,14 +27,16 @@ const Login = () => {
     async function handleSubmit(event: FormEvent){
         event.preventDefault();
         setLoading(true);
+
         await api.post('/users/login', {username: getUser, password: getPassword}).then(response => {
-            if(response.data.userLogin){
+            if (response.data.userLogin){
                 var idUsuario = response.data.userData.IdUsuario;
-                var usuario = response.data.userData.Usuario;
+                var username = response.data.userData.username;
                 var accessToken = response.data.accessToken;
                 var token = response.data.token;
+
                 // setTimeout(() => {
-                    setCookiesLogin(idUsuario, usuario, accessToken, token);
+                    setCookiesLogin(idUsuario, username, accessToken, token);
                 // }, 1000);
             }else{
                 showToast("error", "Erro", response.data.error);
@@ -51,12 +53,12 @@ const Login = () => {
         })
     }
 
-    async function setCookiesLogin(idUsuario: string, nomeUsuario: string, accessToken: string, token: string){
-        let nomeArray = nomeUsuario.split(' ');
-        nomeUsuario = nomeArray[0];
-        // setCookies('userData', {IdUsuario: idUsuario, Usuario: nomeUsuario, Token: accessToken}, {maxAge: 60});
+    async function setCookiesLogin(idUsuario: string, username: string, accessToken: string, token: string){
+        let nomeArray = username.split(' ');
+        username = nomeArray[0];
+        // setCookies('userData', {IdUsuario: idUsuario, Usuario: username, Token: accessToken}, {maxAge: 60});
         // setTimeout(() => {
-        setCookies('userData', {IdUsuario: idUsuario, Usuario: nomeUsuario, accessToken: accessToken});
+        setCookies('userData', {IdUsuario: idUsuario, Usuario: username, accessToken: accessToken});
         document.cookie = `token=${token}; path=/; Secure;`
         api.defaults.headers.common['token'] = token;
 

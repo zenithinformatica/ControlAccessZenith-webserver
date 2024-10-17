@@ -35,7 +35,7 @@ const InsertClient = () => {
         event.preventDefault();
         try {
             api.post("/clients", {IdCliente: getIdCliente, CNPJ: getCnpj, Nome: getNome, Validade: getValidade}, {headers: {accessToken: getCookies.userData.AccessToken}}).then(response => {
-                if(response.data.createdClient){
+                if (response.data.createdClient){
                     showToast("success", "Sucesso", "Cliente criado com sucesso!");
                     setTimeout(() => {
                         history.push("/clients");
